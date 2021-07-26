@@ -7,6 +7,9 @@ Role checks are made using Spring Security Authentication - Users and Authoritie
 
 Pre Conditions: The below tables should be created
 
-Post
-Users
-Authorities
+1)Post
+2)Users
+3)Authorities
+
+Table creation scripts and test screenshots are attached.
+
