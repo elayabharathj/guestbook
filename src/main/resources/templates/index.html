@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout/header::header"/>
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">GuestBook</a>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            <h1 class="text-success">Welcome To the GuestBook Application!</h1>
+            <h6 class="text-info">Please post your comments in the guestbook. <br>This is be reviewed/modifed by Admin before approving.<br>
+            It will take 2 days to post your entry officially in guestbook.</h6>
+            <a href="/post/new" name="click">Click here to create new posts.</a>
+        </div>
+    </main>
+    </body>
+</html>

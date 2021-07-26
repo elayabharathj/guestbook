@@ -1,0 +1,15 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/header::header"/>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">GuestBook</a>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            <form th:replace="layout/postform::postform"/>
+        </div>
+    </main>
+</body>
+</html>
