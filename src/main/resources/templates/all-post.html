@@ -17,7 +17,8 @@
                         <span th:text="${post.body}" />
                     </div>
                     <span class="badge badge-primary badge-pill">
-                        <a class="btn btn-primary" th:href="@{/post/{id}/edit(id=${post.id})}" role="Edit">Edit</a>
+                        <a  th:if="${post.name == null}"class="btn btn-primary" th:href="@{/post/{id}/edit(id=${post.id})}" role="Edit">Edit</a>
+                        <a  th:if="${post.name != null}" class="btn btn-info" th:href="@{/post/{id}/view(id=${post.id})}" role="Edit">View/Edit Uploaded Image</a>
                         <a class="btn btn-warning" th:href="@{/post/{id}/delete(id=${post.id})}" role="Edit">Delete</a>
                         <a  th:if="${!post.approvedStatus}" class="btn btn-info" th:href="@{/post/{id}/approve(id=${post.id})}" role="Edit">Approve</a>
                     </span>
