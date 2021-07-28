@@ -1,9 +1,11 @@
 package com.guestbook.guestapp.model;
 
 import javax.persistence.*;
+import java.io.File;
+import java.sql.Blob;
 
 @Entity
-@Table(name="post")
+@Table(name="entry")
 public class Post {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,6 +14,18 @@ public class Post {
     private String title;
     private String body;
     private boolean approvedStatus;
+
+    //Maps to form
+    @Transient
+    private File file;
+
+    private String name;
+    //Base64 encoded string to render the image in the edit form
+    @Transient
+    private String download;
+
+    @Lob
+    private byte[] content;
 
     public Post() {
     }
@@ -54,5 +68,35 @@ public class Post {
     }
 
 
+    public File getFile() {
+        return file;
+    }
 
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDownload() {
+        return download;
+    }
+
+    public void setDownload(String download) {
+        this.download = download;
+    }
 }
