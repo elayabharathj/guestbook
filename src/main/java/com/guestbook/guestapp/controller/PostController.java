@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -21,7 +19,6 @@ import java.util.Objects;
 public class PostController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(PostController.class);
-    private static String FILE_PATH = "C:/Elayabharath/";
 
     @Autowired
     PostService postService;
@@ -102,17 +99,17 @@ public class PostController {
     @PostMapping("/post")
     public String newPost(@ModelAttribute Post post, Model model) {
         LOGGER.info("Entering newPost() {}", post.getId());
-        if(Objects.nonNull(post.getFile()) && !StringUtils.isEmpty(post.getFile().getName())){
-            LOGGER.info("FileName {}", post.getFile().getName());
+        if(Objects.nonNull(post.getFile()) && !StringUtils.isEmpty(post.getFile().getOriginalFilename())){
+            LOGGER.info("FileName {}", post.getFile().getOriginalFilename());
+            byte[] fileContent = null;
             try{
-                byte[] fileContent = Files.readAllBytes(Paths.get(FILE_PATH + post.getFile().getName()));
+                fileContent = post.getFile().getBytes();
                 LOGGER.info("fileContent.size {}", fileContent.length);
-                post.setContent(fileContent);
-                post.setName(post.getFile().getName());
+            }catch(IOException ex){
+                LOGGER.error("IO Exception {} - ", ex.getMessage());
             }
-            catch (IOException ex){
-                LOGGER.error("IOException Exception occured {}, ----- {}", ex.getMessage());
-            }
+            post.setContent(fileContent);
+            post.setName(post.getFile().getOriginalFilename());
         }
         String redirectTo = "success" ;
         if (validateUserPost(post)) return "error";
