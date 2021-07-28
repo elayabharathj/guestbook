@@ -7,9 +7,11 @@ Role checks are made using Spring Security Authentication - Users and Authoritie
 
 Pre Conditions: The below tables should be created
 
-1)Post
+1)Entry
 2)Users
 3)Authorities
 
 Table creation scripts and test screenshots are attached.
+Create a folder "Elayabharath" in C:
+The functionality is made to read the file with the filename given from this directory. Can be enhanced to read from any location if needed.
 
