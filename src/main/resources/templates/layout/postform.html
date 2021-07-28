@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
 <body>
-    <form th:fragment="postform" action="#" th:action="@{/post}" th:object="${post}" th:method="@{{method}(method=${action})}" method="#">
+    <form th:fragment="postform" action="#" th:action="@{/post}" th:object="${post}" th:method="@{{method}(method=${action})}" method="#" enctype="multipart/form-data">
         <div class="form-group">
             <input th:field="*{id}" type="text" hidden class="form-control" id="id" />
         </div>
