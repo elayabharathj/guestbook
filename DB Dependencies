@@ -26,3 +26,10 @@ INSERT INTO users (username, password, enabled)
 
 INSERT INTO authorities (username, authority)
   values ('guest', 'ROLE_USER');
+  
+  
+CREATE TABLE entry(id INT NOT NULL AUTO_INCREMENT, title varchar(50) not null, body text,  approved_status boolean default false, content longblog null, name varchar(100), primary key(id));
+
+
+
+
