@@ -1,8 +1,8 @@
 package com.guestbook.guestapp.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
-import java.io.File;
-import java.sql.Blob;
 
 @Entity
 @Table(name="entry")
@@ -17,7 +17,7 @@ public class Post {
 
     //Maps to form
     @Transient
-    private File file;
+    private MultipartFile file;
 
     private String name;
     //Base64 encoded string to render the image in the edit form
@@ -68,11 +68,11 @@ public class Post {
     }
 
 
-    public File getFile() {
+    public MultipartFile getFile() {
         return file;
     }
 
-    public void setFile(File file) {
+    public void setFile(MultipartFile file) {
         this.file = file;
     }
 
