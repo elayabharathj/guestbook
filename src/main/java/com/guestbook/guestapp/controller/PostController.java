@@ -11,12 +11,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Objects;
 
 @Controller
 public class PostController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(PostController.class);
+    private static String FILE_PATH = "C:/Elayabharath/";
 
     @Autowired
     PostService postService;
@@ -97,13 +102,26 @@ public class PostController {
     @PostMapping("/post")
     public String newPost(@ModelAttribute Post post, Model model) {
         LOGGER.info("Entering newPost() {}", post.getId());
+        if(Objects.nonNull(post.getFile()) && !StringUtils.isEmpty(post.getFile().getName())){
+            LOGGER.info("FileName {}", post.getFile().getName());
+            try{
+                byte[] fileContent = Files.readAllBytes(Paths.get(FILE_PATH + post.getFile().getName()));
+                LOGGER.info("fileContent.size {}", fileContent.length);
+                post.setContent(fileContent);
+                post.setName(post.getFile().getName());
+            }
+            catch (IOException ex){
+                LOGGER.error("IOException Exception occured {}, ----- {}", ex.getMessage());
+            }
+        }
         String redirectTo = "success" ;
         if (validateUserPost(post)) return "error";
-        //Request comes from the form page and not from the edit page.
+        //Request comes from the form page and also from the edit page.
         //Redirect is based on the id values which tells where the request comes from
         if(Objects.nonNull(post.getId()) && post.getId().intValue()!=0)  {
             redirectTo ="redirect:/posts";
         }
+        LOGGER.info("redirectTo {}", redirectTo);
         postService.save(post);
         LOGGER.info("Leaving newPost() with postId created - {}", post.getId());
         return redirectTo;
@@ -148,5 +166,23 @@ public class PostController {
         postService.approve(post);
         LOGGER.info("Leaving approvePost() for post id {}", id);
         return "redirect:/posts";
+    }
+
+    /**
+     * Method to approve post. Map the form elements to model and persist with approvedstatus true.
+     * Only ROLE_ADMIN is authorized to view/edit/approve all the posts available
+     * @param id
+     * @param model
+     * @return
+     */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @GetMapping("/post/{id}/view")
+    public String viewUploadedImage(@PathVariable Integer id, Model model) {
+        LOGGER.info("Entering viewPost() with post id {}", id);
+        Post post = postService.getPostById(id);
+        LOGGER.info("post content size {}", Objects.nonNull(post.getContent()) ? post.getContent().length: 0);
+        post.setDownload(Base64.getEncoder().encodeToString(post.getContent()));
+        model.addAttribute("post", post);
+        return "post";
     }
 }
