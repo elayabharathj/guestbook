@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Objects;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -33,15 +38,14 @@ class GuestappApplicationTests {
 		assertThat(postService).isNotNull();
 	}
 
-	@Test
-	public void getAllPosts(){
-		Iterable<Post> allPosts = postService.getAllPost();
-		assertThat(allPosts).isNotNull();
-		assertThat(allPosts.iterator().next().getBody()).isNotNull();
-		assertThat(allPosts.iterator().next().getTitle()).isNotNull();
-		assertThat(allPosts.iterator().next().getId()).isNotNull();
 
-	}
+	//Uncomment when you need to delete all posts created for test.
+	/*@Test
+	public void deleteAllPosts(){
+		Iterable<Post> allPosts = postService.getAllPost();
+		allPosts.forEach(post -> postService.delete(post.getId()));
+
+	}*/
 
 
 	@Test
@@ -50,6 +54,18 @@ class GuestappApplicationTests {
 		post.setApprovedStatus(false);
 		post.setTitle("Title of the body goes here");
 		post.setBody("This is Test body");
+		File file = new File("C:/Elayabharath/Uploaded_image.jpg");
+		post.setFile(file);
+		post.setName("Uploaded_image.jpg");
+
+		if(Objects.nonNull(post.getFile())){
+			try{
+				byte[] fileContent = Files.readAllBytes(post.getFile().toPath());
+				post.setContent(fileContent);
+			}
+			catch (IOException ex){
+			}
+		}
 		postService.save(post);
 		assertThat(post).isNotNull();
 		assertThat(post.getId()).isNotNull();
@@ -58,6 +74,8 @@ class GuestappApplicationTests {
 		assertThat(postCreated.getId()).isNotNull();
 		assertThat(postCreated.getTitle()).isEqualTo(post.getTitle());
 		assertThat(postCreated.getBody()).isEqualTo(post.getBody());
+		assertThat(postCreated.getName()).isEqualTo("Uploaded_image.jpg");
+		assertThat(postCreated.getContent()).isNotNull();
 
 	}
 
@@ -113,6 +131,16 @@ class GuestappApplicationTests {
 		assertThat(postUpdated).isNotNull();
 		assertThat(postUpdated.getBody()).isEqualTo("Admin has updated the content");
 		assertThat(postUpdated.getBody()).isNotEqualTo("Hey Admin, Update this");
+
+	}
+
+	@Test
+	public void getAllPosts(){
+		Iterable<Post> allPosts = postService.getAllPost();
+		assertThat(allPosts).isNotNull();
+		assertThat(allPosts.iterator().next().getBody()).isNotNull();
+		assertThat(allPosts.iterator().next().getTitle()).isNotNull();
+		assertThat(allPosts.iterator().next().getId()).isNotNull();
 
 	}
 
