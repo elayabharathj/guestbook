@@ -25,6 +25,10 @@ public class GuestBookErrorController implements ErrorController {
             if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 return "error-403";
             }
+            if (statusCode == HttpStatus.NOT_FOUND.value()) {
+                return "error-404";
+            }
+
         }
         LOGGER.info("Leaving handleError()");
         return "error";
