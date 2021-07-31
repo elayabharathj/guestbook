@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.StringUtils;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
@@ -97,8 +99,11 @@ public class PostController {
      * @return
      */
     @PostMapping("/post")
-    public String newPost(@ModelAttribute Post post, Model model) {
+    public String newPost(@ModelAttribute Post post, Model model, @Valid Post inputPost, BindingResult result) {
         LOGGER.info("Entering newPost() {}", post.getId());
+        if(result.hasErrors()){
+            return "post";
+        }
         if(Objects.nonNull(post.getFile()) && !StringUtils.isEmpty(post.getFile().getOriginalFilename())){
             LOGGER.info("FileName {}", post.getFile().getOriginalFilename());
             byte[] fileContent = null;
