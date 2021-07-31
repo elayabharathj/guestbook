@@ -4,11 +4,16 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="#">GuestBook</a>
+        <div class="form-group">
+            <a href="#" th:href="@{/logout}" class="btn btn-danger" float-right>Log Out</a>
+        </div>
     </div>
 </nav>
+
 <main>
     <div class="container">
-        <h4>All Posts Created!</h4>
+        <h3 class="text-success"> Welcome Admin!</h3>
+        <h4> All Posts Created!</h4>
         <ul class="list-group">
             <th:block th:each="post : ${posts}">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -20,7 +25,7 @@
                         <a  th:if="${post.name == null}"class="btn btn-primary" th:href="@{/post/{id}/edit(id=${post.id})}" role="Edit">Edit</a>
                         <a  th:if="${post.name != null}" class="btn btn-info" th:href="@{/post/{id}/view(id=${post.id})}" role="Edit">View/Edit Uploaded Image</a>
                         <a class="btn btn-warning" th:href="@{/post/{id}/delete(id=${post.id})}" role="Edit">Delete</a>
-                        <a  th:if="${!post.approvedStatus}" class="btn btn-info" th:href="@{/post/{id}/approve(id=${post.id})}" role="Edit">Approve</a>
+                        <a  th:if="${!post.approvedStatus}" class="btn btn-success" th:href="@{/post/{id}/approve(id=${post.id})}" role="Edit">Approve</a>
                     </span>
                  </li>
             </th:block>
