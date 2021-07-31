@@ -3,6 +3,8 @@ package com.guestbook.guestapp.model;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="entry")
@@ -11,7 +13,12 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private int id;
+
+    @NotEmpty(message = "Title of the post cannot be empty")
+    @Size(min = 2, max = 50)
     private String title;
+
+    @NotEmpty(message = "Content of the post cannot be empty")
     private String body;
     private boolean approvedStatus;
 
