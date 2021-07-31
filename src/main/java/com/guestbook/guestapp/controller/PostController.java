@@ -117,7 +117,6 @@ public class PostController {
             post.setName(post.getFile().getOriginalFilename());
         }
         String redirectTo = "success" ;
-        if (validateUserPost(post)) return "error";
         //Request comes from the form page and also from the edit page.
         //Redirect is based on the id values which tells where the request comes from
         if(Objects.nonNull(post.getId()) && post.getId().intValue()!=0)  {
