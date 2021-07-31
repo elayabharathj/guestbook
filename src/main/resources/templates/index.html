@@ -9,11 +9,12 @@
     </nav>
     <main>
         <div class="container">
-            <h1 class="text-success">Welcome To the GuestBook Application!</h1>
-            <h6 class="text-info">Please post your comments in the guestbook. <br>This is be reviewed/modifed by Admin before approving.<br>
-            It will take 2 days to post your entry officially in guestbook.</h6>
+            <h1 class="text-success" th:text =${name}></h1>
+            <h6 class="text-info">Please post your entries/comments in the guestbook. <br>This is will be reviewed/modifed by Admin before approving. It will take 2 days to post your entry officially in guestbook.</h6>
             <a href="/post/new" name="click">Click here to create new posts.</a>
+
         </div>
     </main>
+
     </body>
 </html>
