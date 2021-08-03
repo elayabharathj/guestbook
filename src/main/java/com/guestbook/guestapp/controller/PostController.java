@@ -80,12 +80,11 @@ public class PostController {
      * Method to return the delete post based on id
      * Only ROLE_ADMIN is authorized to view/edit/approve all the posts available
      * @param id
-     * @param model
      * @return
      */
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/post/{id}/delete")
-    public String deletePost(@PathVariable Integer id, Model model) {
+    public String deletePost(@PathVariable Integer id) {
         LOGGER.info("Entering deletePost() for postId {}", id);
         postService.delete(id);
         LOGGER.info("Leaving deletePost() for postId {}", id);
@@ -95,11 +94,11 @@ public class PostController {
     /**
      * Method to create new post. Map the form elements to model and persist
      * @param post
-     * @param model
+     * @param result
      * @return
      */
     @PostMapping("/post")
-    public String newPost(@ModelAttribute Post post, Model model, @Valid Post inputPost, BindingResult result) {
+    public String newPost(@Valid @ModelAttribute Post post, BindingResult result) {
         LOGGER.info("Entering newPost() {}", post.getId());
         if(result.hasErrors()){
             return "post";
@@ -132,36 +131,26 @@ public class PostController {
      * Method to update post. Map the form elements to model and persist.
      * Only ROLE_ADMIN is authorized to view/edit/approve all the posts available
      * @param post
-     * @param model
      * @return
      */
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/post")
-    public String updatePost(@ModelAttribute Post post, Model model) {
+    public String updatePost(@ModelAttribute Post post) {
         LOGGER.info("Entering updatePost() {}", post.getId());
-        if (validateUserPost(post)) return "error";
         postService.save(post);
         LOGGER.info("Leaving updatePost() {}", post.getId());
         return "all-post";
-    }
-
-    private boolean validateUserPost(@ModelAttribute Post post) {
-        if (StringUtils.isEmpty(post.getTitle())|| (StringUtils.isEmpty(post.getBody()))){
-            return true;
-        }
-        return false;
     }
 
     /**
      * Method to approve post. Map the form elements to model and persist with approvedstatus true.
      * Only ROLE_ADMIN is authorized to view/edit/approve all the posts available
      * @param id
-     * @param model
      * @return
      */
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/post/{id}/approve")
-    public String approvePost(@PathVariable Integer id, Model model) {
+    public String approvePost(@PathVariable Integer id) {
         LOGGER.info("Entering approvePost() with post id {}", id);
         Post post = postService.getPostById(id);
         postService.approve(post);
